@@ -2,25 +2,21 @@
 
 Remote voice/AI bridge for **MYAI on an Official Bedrock server hosted at Falix**.
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/drmacze/MYAI-Voice-Bridge)
+
 The Minecraft server stays on Falix. This Render service connects to the Falix console, receives MYAI state/pair events, sends player speech to an AI provider, and sends the structured result back into Minecraft. Safari on iPhone supplies the microphone and speaks the reply.
 
 ## Important
 
 Use **MYAI v0.6.1 VoiceFix or newer** on the Bedrock server. The original v0.6.0 build did not emit the bridge request event required by mobile voice.
 
-## Render setup
+## One-tap Render setup
 
-Create a Render **Web Service** from this repository.
+Tap **Deploy to Render** above. The included `render.yaml` creates a free Node web service in the **Singapore** region and asks for your `FALIX_API_KEY`.
 
-- Runtime: Node
-- Build command: `npm install`
-- Start command: `npm start`
-- Instance: Free
-- Health URL: `/api/config`
+Keep all real API keys in Render Environment Variables, never in GitHub.
 
-The included `render.yaml` asks for `FALIX_API_KEY`. Keep all real API keys in Render Environment Variables, never in GitHub.
-
-Then add at least one AI provider key:
+After the first deploy, add at least one AI provider key in Render:
 
 - `GEMINI_API_KEY` — also works for microphone transcription
 - `OPENAI_API_KEY` — also works for microphone transcription
