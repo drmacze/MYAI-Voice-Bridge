@@ -2,7 +2,11 @@
 
 Remote voice/AI bridge for **MYAI on an Official Bedrock server hosted at Falix**.
 
-It runs separately on Render and connects to Falix through the Falix Public API console WebSocket. The Minecraft server itself stays on Falix.
+The Minecraft server stays on Falix. This Render service connects to the Falix console, receives MYAI state/pair events, sends player speech to an AI provider, and sends the structured result back into Minecraft. Safari on iPhone supplies the microphone and speaks the reply.
+
+## Important
+
+Use **MYAI v0.6.1 VoiceFix or newer** on the Bedrock server. The original v0.6.0 build did not emit the bridge request event required by mobile voice.
 
 ## Render setup
 
@@ -14,27 +18,27 @@ Create a Render **Web Service** from this repository.
 - Instance: Free
 - Health URL: `/api/config`
 
-Add Environment variables from `.env.example`. At minimum:
+The included `render.yaml` asks for `FALIX_API_KEY`. Keep all real API keys in Render Environment Variables, never in GitHub.
 
-- `FALIX_API_KEY`
-- `FALIX_SERVER_NAME=Motion Roleplay`
-- `MYAI_ACCESS_TOKEN` (your own long random secret)
-- `MYAI_CONFIG_SECRET` (another long random secret)
-- at least one AI provider key, e.g. `GEMINI_API_KEY` or `OPENAI_API_KEY`
+Then add at least one AI provider key:
 
-Do **not** put real API keys in GitHub.
+- `GEMINI_API_KEY` — also works for microphone transcription
+- `OPENAI_API_KEY` — also works for microphone transcription
+- `ANTHROPIC_API_KEY`
+- `OPENROUTER_API_KEY`
+- `DEEPSEEK_API_KEY`
+
+Voice input requires **OpenAI or Gemini** for speech-to-text. Voice output defaults to iPhone/Safari speech synthesis, so it does not require a separate TTS API.
 
 ## iPhone flow
 
 1. Open the Render HTTPS URL in Safari.
-2. In Minecraft: MYAI Settings Tablet → Mobile Voice / Cloud.
-3. Set the Render URL as the bridge URL.
+2. In Minecraft: **MYAI Settings Tablet → Mobile Voice / Cloud**.
+3. Save the Render URL as the Cloud URL.
 4. Generate a 6-digit pair code.
-5. Pair in Safari.
-6. Use Push-to-Talk.
+5. Enter the code in Safari.
+6. Select an NPC and tap **Tap bicara**.
 
-For the cheapest initial test, use Browser TTS so reply audio is spoken by iPhone without a server-side TTS API call.
+## Security
 
-## Render Free behavior
-
-The free service can sleep after a period without inbound traffic. While the MYAI Safari page is open it polls the bridge regularly, so active voice sessions keep receiving inbound requests. If the service was asleep, the first page load can take about a minute to wake it.
+Never commit Falix/API keys to this repository. Render Environment Variables are the intended secret store.
