@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: myai-voice-bridge
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/config
+    envVars:
+      - key: FALIX_SERVER_NAME
+        value: Motion Roleplay
+      - key: FALIX_API_BASE
+        value: https://client.falixnodes.net/api/v2
+      - key: MYAI_REQUIRE_PAIR
+        value: "true"
+      - key: MYAI_SESSION_HOURS
+        value: "168"
+      - key: FALIX_API_KEY
+        sync: false
+      - key: MYAI_ACCESS_TOKEN
+        sync: false
+      - key: MYAI_CONFIG_SECRET
+        sync: false
